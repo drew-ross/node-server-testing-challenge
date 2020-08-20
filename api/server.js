@@ -24,8 +24,12 @@ server.post('/api/hobbits', (req, res) => {
     .catch(err => res.status(500).json({ message: 'Server error', error: err.message }));
 });
 
-server.put('/api/hobbits', (req, res) => {
-  res.send(200);
+server.put('/api/hobbits/:id', (req, res) => {
+  const hobbit = req.body;
+  const id = req.params.id;
+  hobbitsDb.update(id, hobbit)
+    .then(id => res.status(204).json(id))
+    .catch(err => res.status(500).json({ message: 'Server error', error: err.message }));
 });
 
 server.delete('/api/hobbits', (req, res) => {

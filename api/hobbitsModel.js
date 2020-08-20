@@ -29,6 +29,10 @@ function remove(id) {
   return null;
 }
 
-function update(id) {
-  return null;
+function update(id, hobbit) {
+  return db('hobbits')
+    .where({ id })
+    .update(hobbit)
+    .then(id => id)
+    .catch(err => console.log(err.message));
 }
