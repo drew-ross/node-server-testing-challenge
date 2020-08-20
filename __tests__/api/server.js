@@ -32,11 +32,42 @@ describe('api/hobbits', () => {
         })
         .catch(err => console.log(err));
     });
+
+    it('should return 200', () => {
+      return supertest(server)
+        .get('/api/hobbits')
+        .then(res => {
+          expect(res.status).toBe(200);
+        })
+        .catch(err => console.log(err));
+    });
   });
 
   describe('POST hobbits', () => {
 
-    it.todo('should add a hobbit to the database');
+    it('should add a hobbit to the database', async () => {
+      let hobbits = await db('hobbits');
+      expect(hobbits).toHaveLength(1);
+
+      await supertest(server)
+        .post('/api/hobbits')
+        .send({ name: 'Frodo' })
+        .then()
+        .catch(err => console.log(err));
+
+      hobbits = await db('hobbits');
+      expect(hobbits).toHaveLength(2);
+      expect(hobbits[1]).toHaveProperty('name', 'Frodo');
+    });
+
+    it('should return 201', async () => {
+
+      await supertest(server)
+        .post('/api/hobbits')
+        .send({ name: 'Frodo' })
+        .then(res => expect(res.status).toBe(201))
+        .catch(err => console.log(err));
+    });
   });
 
   describe('PUT hobbits', () => {

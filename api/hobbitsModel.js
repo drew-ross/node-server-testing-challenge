@@ -18,14 +18,17 @@ function findBy() {
   return null;
 }
 
-function insert() {
+function insert(hobbit) {
+  return db('hobbits')
+    .insert(hobbit)
+    .then(id => id)
+    .catch(err => console.log(err.message));
+}
+
+function remove(id) {
   return null;
 }
 
-function remove() {
-  return null;
-}
-
-function update() {
+function update(id) {
   return null;
 }

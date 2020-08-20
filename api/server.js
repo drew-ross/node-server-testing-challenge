@@ -18,7 +18,10 @@ server.get('/api/hobbits', (req, res) => {
 });
 
 server.post('/api/hobbits', (req, res) => {
-  res.send(200);
+  const hobbit = req.body;
+  hobbitsDb.insert(hobbit)
+    .then(id => res.status(201).json(id))
+    .catch(err => res.status(500).json({ message: 'Server error', error: err.message }));
 });
 
 server.put('/api/hobbits', (req, res) => {
