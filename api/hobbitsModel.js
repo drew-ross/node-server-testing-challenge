@@ -9,7 +9,9 @@ module.exports = {
 };
 
 function find() {
-  return null;
+  return db('hobbits')
+    .then(hobbits => hobbits)
+    .catch(err => console.log(err.message));
 }
 
 function findBy() {

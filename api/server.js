@@ -12,7 +12,9 @@ server.get('/', (req, res) => res.status(200).json({ message: "server up." }));
 server.get('/api', (req, res) => res.status(200).json({ message: "api up." }));
 
 server.get('/api/hobbits', (req, res) => {
-  res.send(200);
+  hobbitsDb.find()
+    .then(hobbits => res.status(200).json(hobbits))
+    .catch(err => res.status(500).json({ message: 'Server error', error: err.message }));
 });
 
 server.post('/api/hobbits', (req, res) => {
