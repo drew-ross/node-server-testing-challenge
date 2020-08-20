@@ -32,8 +32,11 @@ server.put('/api/hobbits/:id', (req, res) => {
     .catch(err => res.status(500).json({ message: 'Server error', error: err.message }));
 });
 
-server.delete('/api/hobbits', (req, res) => {
-  res.send(200);
+server.delete('/api/hobbits/:id', (req, res) => {
+  const id = req.params.id;
+  hobbitsDb.remove(id)
+    .then(id => res.status(204).json(id))
+    .catch(err => res.status(500).json({ message: 'Server error', error: err.message }));
 });
 
 module.exports = server;

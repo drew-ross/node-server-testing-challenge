@@ -18,7 +18,6 @@ describe('api/hobbits', () => {
     await db('hobbits').truncate();
     await db('hobbits').insert({ name: "Samwise" });
   });
-
   afterAll(async () => {
     await db('hobbits').truncate();
     await db('hobbits').insert({ name: "Samwise" });
@@ -34,6 +33,7 @@ describe('api/hobbits', () => {
         })
         .catch(err => console.log(err));
     });
+
     it('should return 200', () => {
       return supertest(server)
         .get('/api/hobbits')
@@ -59,6 +59,7 @@ describe('api/hobbits', () => {
       expect(hobbits).toHaveLength(2);
       expect(hobbits[1]).toHaveProperty('name', 'Frodo');
     });
+
     it('should return 201', async () => {
       await supertest(server)
         .post('/api/hobbits')
@@ -84,6 +85,7 @@ describe('api/hobbits', () => {
       expect(hobbits).toHaveLength(1);
       expect(hobbits[0]).toHaveProperty('name', 'Pippin');
     });
+
     it('should return 204', async () => {
       await supertest(server)
         .put('/api/hobbits/1')
@@ -94,25 +96,24 @@ describe('api/hobbits', () => {
   });
 
   describe('DELETE hobbits', () => {
+    it('should remove a hobbit from the database', async () => {
+      let hobbits = await db('hobbits');
+      expect(hobbits).toHaveLength(1);
 
-    it.todo('should remove a hobbit from the database');
+      await supertest(server)
+        .delete('/api/hobbits/1')
+        .then()
+        .catch(err => console.log(err));
+      hobbits = await db('hobbits');
+
+      expect(hobbits).toHaveLength(0);
+    });
+
+    it('should return 204', async () => {
+      await supertest(server)
+        .delete('/api/hobbits/1')
+        .then(res => expect(res.status).toBe(204))
+        .catch(err => console.log(err));
+    });
   });
-
-  // beforeEach(() => {
-  //   return db('hobbits').truncate();
-  // });
-
-  // afterAll(() => {
-  //   return db('hobbits').truncate();
-  // });
-
-  // it('should add hobbits', async () => {
-  //   await Hobbits.insert({
-  //     name: 'Gaffer',
-  //   });
-
-  //   const hobbits = await db('hobbits');
-
-  //   expect(hobbits).toHaveLength(1);
-  // });
 });

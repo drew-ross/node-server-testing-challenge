@@ -26,7 +26,11 @@ function insert(hobbit) {
 }
 
 function remove(id) {
-  return null;
+  return db('hobbits')
+    .where({ id })
+    .del()
+    .then(id => id)
+    .catch(err => console.log(err.message));
 }
 
 function update(id, hobbit) {
